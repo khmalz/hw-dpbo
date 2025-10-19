@@ -1,6 +1,6 @@
 # Installation & Upgrade Meson Guide
 
-[< Back to main README](README.md)
+[< Back to main README](https://github.com/khmalz/hw-dpbo?tab=readme-ov-file#homework-for-oop-course)
 
 This guide covers how to install Meson on various operating systems.
 

@@ -39,4 +39,4 @@ The final executable will be located inside the `build` directory.
 ##  Installing & Upgrading Meson Version
 
 For detailed instructions on how to install & upgrade Meson on Windows and Linux, 
-please see the **[Installation Guide (INSTALL.md)](INSTALL.md)**.
+please see the **[Installation & Upgrade Guide (INSTALL.md)](INSTALL.md)**.
