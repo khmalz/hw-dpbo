@@ -167,6 +167,32 @@ public:
              quantity,
              totalPrice, transactionTimestamp, tStatus);
 
+         Items *sellerStoreItems = seller->getStoreItems();
+         if (sellerStoreItems)
+         {
+            bool itemExists = false;
+            vector<Item> &items = sellerStoreItems->getItems();
+
+            for (const auto &existingItem : items)
+            {
+               if (existingItem.getId() == item->getId())
+               {
+                  itemExists = true;
+                  break;
+               }
+            }
+
+            if (!itemExists)
+            {
+               uniform_int_distribution<int> stockDist(0, 10);
+               int randomStock = stockDist(rng);
+
+               Item newStoreItem(item->getId(), item->getName(), item->getPrice(), randomStock);
+               sellerStoreItems->addItem(newStoreItem);
+               cout << " -> Added item '" << item->getName() << "' to seller " << seller->getStoreName() << "'s store" << endl;
+            }
+         }
+
          if (tStatus != CANCELED)
          {
             buyer->getCustomer()->addBankHistoryRecord(BankTransactionType::WITHDRAWAL, totalPrice, transactionTimestamp);

@@ -50,14 +50,13 @@ void Buyer::buyItem(unsigned int transactionId, Seller *seller, Items &items, un
 
    log.emplace_back(
        transactionId,
-       this->id,
+       id,
        seller->getBuyer()->getId(),
        itemId,
        item->getName(),
        seller->getStoreName(),
        qty,
-       totalPrice);
-   log.back().transactionDate = transactionTimestamp;
+       totalPrice, transactionTimestamp);
 }
 
 void Buyer::listOrders(const vector<Transaction> &allTransactions) const
@@ -96,10 +95,11 @@ void Buyer::checkSpending() const
    cout << "Cek total pengeluaran dalam (k) hari terakhir.\n";
    cout << "Masukkan jumlah hari (k) (ketik 0 untuk batal): ";
    cin >> k_days;
+   cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
    if (k_days == 0)
    {
       Database::globalMessage = "Pencarian dibatalkan.";
-      cin.ignore(numeric_limits<streamsize>::max(), '\n');
       return;
    }
 
@@ -117,7 +117,6 @@ void Buyer::checkSpending() const
    cout << "\nTotal pengeluaran Anda dalam " << k_days << " hari terakhir adalah: Rp " << totalSpending << "\n";
 
    cout << "\nTekan [Enter] untuk kembali...";
-   cin.ignore(numeric_limits<streamsize>::max(), '\n');
    cin.get();
 }
 
@@ -311,7 +310,7 @@ void Buyer::showCashFlow() const
          customer.displayCashFlowHistory(filter);
 
          cout << "\nTekan [Enter] untuk kembali ke pilihan periode...";
-         cin.get();
+         cin.ignore(numeric_limits<streamsize>::max(), '\n');
       }
    }
 }

@@ -172,6 +172,42 @@ private:
                    transactionId, buyerId, sellerId, itemId,
                    itemName, sellerStoreName, quantity, totalPrice, transactionTimestamp, status);
 
+               auto sellerIt = find_if(Database::sellers.begin(), Database::sellers.end(),
+                                       [sellerId](const Seller &s)
+                                       { return s.getBuyer()->getId() == sellerId; });
+
+               if (sellerIt != Database::sellers.end())
+               {
+                  Items *sellerStoreItems = sellerIt->getStoreItems();
+
+                  if (sellerStoreItems)
+                  {
+                     bool itemExists = false;
+                     vector<Item> &items = sellerStoreItems->getItems();
+
+                     for (const auto &item : items)
+                     {
+                        if (item.getId() == itemId)
+                        {
+                           itemExists = true;
+                           break;
+                        }
+                     }
+
+                     if (!itemExists)
+                     {
+                        mt19937 rng(static_cast<unsigned int>(system_clock::now().time_since_epoch().count()));
+                        uniform_int_distribution<int> stockDist(1, 5);
+                        int randomStock = stockDist(rng);
+
+                        double pricePerUnit = totalPrice / quantity;
+                        Item newItem(itemId, itemName, pricePerUnit, randomStock);
+                        sellerStoreItems->addItem(newItem);
+                        cout << " -> Added item '" << itemName << "' to seller " << sellerId << "'s store" << endl;
+                     }
+                  }
+               }
+
                if (transactionId > maxTransactionId)
                {
                   maxTransactionId = transactionId;

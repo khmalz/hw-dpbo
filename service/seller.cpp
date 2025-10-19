@@ -56,22 +56,13 @@ void Seller::registerNewItem()
         Database::globalMessage = "Pendaftaran item baru dibatalkan.";
         return;
     }
-    cout << "Harga per Item (ketik 0 untuk batal): Rp ";
+    cout << "Harga per Item: Rp ";
     cin >> price;
-    if (price == 0)
-    {
-        Database::globalMessage = "Pendaftaran item baru dibatalkan.";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        return;
-    }
-    cout << "Jumlah Stok (ketik 0 untuk batal): ";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    cout << "Jumlah Stok: ";
     cin >> quantity;
-    if (quantity == 0)
-    {
-        Database::globalMessage = "Pendaftaran item baru dibatalkan.";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        return;
-    }
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     Item newItem(Database::nextItemId++, name, price, quantity);
     storeItems.addItem(newItem);
@@ -160,16 +151,19 @@ void Seller::showTopKItems(const vector<Transaction> &allTransactions) const
     int month, year, k;
     cout << "Masukkan Bulan (1-12) (ketik 0 untuk batal): ";
     cin >> month;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
     if (month == 0)
     {
         Database::globalMessage = "Pencarian item dibatalkan.";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         return;
     }
     cout << "Masukkan Tahun (cth: 2025): ";
     cin >> year;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     cout << "Berapa item teratas (K): ";
     cin >> k;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     map<unsigned int, int> itemPopularity;
     for (const auto &record : allTransactions)
@@ -202,7 +196,7 @@ void Seller::showTopKItems(const vector<Transaction> &allTransactions) const
     int count = 0;
     for (const auto &pair : sortedItems)
     {
-        if (count++ >= k)
+        if (++count > k)
             break;
         Item *item = const_cast<Seller *>(this)->getStoreItems()->findItemById(pair.first);
         if (item)
@@ -211,10 +205,19 @@ void Seller::showTopKItems(const vector<Transaction> &allTransactions) const
                  << " (ID: " << pair.first << ") - Terjual: "
                  << pair.second << " unit\n";
         }
+        else
+        {
+            cout << "❌ Item dengan ID " << pair.first << " tidak ditemukan!\n";
+        }
     }
+
+    if (count == 0)
+    {
+        cout << "Tidak ada item populer untuk periode tersebut.\n";
+    };
+
     cout << "\nTekan [Enter] untuk kembali...";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    cin.get();
 }
 
 void Seller::showLoyalCustomers(const vector<Transaction> &allTransactions) const
