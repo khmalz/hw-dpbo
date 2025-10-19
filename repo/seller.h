@@ -8,7 +8,7 @@ using namespace std;
 
 class Buyer;
 class BankCustomer;
-struct Transaction;
+class Transaction;
 
 class Seller
 {

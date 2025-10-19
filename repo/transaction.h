@@ -14,8 +14,9 @@ enum OrderStatus
   CANCELED
 };
 
-struct Transaction
+class Transaction
 {
+public:
   unsigned int transactionId;
   unsigned int buyerId;
   unsigned int sellerId;

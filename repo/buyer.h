@@ -10,7 +10,7 @@
 using namespace std;
 
 class Seller;
-struct Transaction;
+class Transaction;
 
 class Buyer
 {
