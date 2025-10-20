@@ -32,7 +32,7 @@ public:
    void buyItem(unsigned int transactionId, Seller *seller, Items &items, unsigned int itemId, int qty, vector<Transaction> &log);
    void listOrders(const vector<Transaction> &allTransactions) const;
    void confirmReceipt(vector<Transaction> &allTransactions);
-   void cancelOrder(vector<Transaction> &allTransactions, const vector<Seller> &allSellers);
+   void cancelOrder(vector<Transaction> &allTransactions, vector<Seller> &allSellers);
    void showCashFlow() const;
    void checkSpending() const;
 };

@@ -168,7 +168,7 @@ void Buyer::confirmReceipt(vector<Transaction> &allTransactions)
    Database::globalMessage = "Error: ID Transaksi tidak ditemukan atau sudah dikonfirmasi.";
 }
 
-void Buyer::cancelOrder(vector<Transaction> &allTransactions, const vector<Seller> &allSellers)
+void Buyer::cancelOrder(vector<Transaction> &allTransactions, vector<Seller> &allSellers)
 {
    printHeader("Batalkan Pesanan");
 
@@ -209,11 +209,11 @@ void Buyer::cancelOrder(vector<Transaction> &allTransactions, const vector<Selle
       if (record.transactionId == idToCancel && record.buyerId == id && record.status == PAID)
       {
          Seller *sellerOfItem = nullptr;
-         for (const auto &s : allSellers)
+         for (auto &s : allSellers)
          {
             if (s.getBuyer()->getId() == record.sellerId)
             {
-               sellerOfItem = const_cast<Seller *>(&s);
+               sellerOfItem = &s;
                break;
             }
          }
